@@ -1,0 +1,27 @@
+{
+  "name": "phonebook-server",
+  "version": "0.0.1",
+  "description": "Back end for Full Stack Open 2022 phonebook app, using RESTful API.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TuplexGaming/phonebook-server.git"
+  },
+  "author": "Eric Thornton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TuplexGaming/phonebook-server/issues"
+  },
+  "homepage": "https://github.com/TuplexGaming/phonebook-server#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
