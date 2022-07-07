@@ -2,9 +2,13 @@
 // npm start      start the server without nodemon
 
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
 
 app.use(express.json());
+
+morgan.token('body', (req) => JSON.stringify(req.body));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 let persons = [
   {
@@ -66,16 +70,21 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body;
+
   if (!body.name) {
     return response.status(400).json({ error: 'name is missing' });
+
   } else if (!body.number) {
     return response.status(400).json({ error: 'number is missing' });
+
   } else {
     // Reject if the name matches any already in the array
     const matchedPersons = persons.filter(p => p.name === body.name);
     if (matchedPersons.length > 0) {
       return response.status(400).json({ error: 'name must be unique' });
     }
+
+    // Add new person if required data is available
     const person = {
       id: generateId(),
       name: body.name,
