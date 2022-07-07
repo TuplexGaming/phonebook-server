@@ -4,6 +4,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     "id": 1,
@@ -27,13 +29,61 @@ let persons = [
   }
 ];
 
+const generateId = () => {
+  const maxId = 100000;
+  return Math.floor(Math.random() * maxId);
+}
+
 
 app.get('/', (request, response) => {
-  response.send('<h1>Phonebook back end</h1>')
+  response.send('<h1>Phonebook back end</h1>');
 });
 
 app.get('/api/persons', (request, response) => {
   response.json(persons);
+});
+
+app.get('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find(p => p.id === id);
+  if (person) {
+    response.json(person);
+  } else {
+    response.status(404).end();
+  }
+});
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find(p => p.id === id);
+  if (person) {
+    persons = persons.filter(p => p.id !== id);
+    response.status(204).end();
+  } else {
+    response.status(404).end();
+  }
+});
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body;
+  if (!body.name) {
+    return response.status(400).json({ error: 'name is missing' });
+  } else if (!body.number) {
+    return response.status(400).json({ error: 'number is missing' });
+  } else {
+    // Reject if the name matches any already in the array
+    const matchedPersons = persons.filter(p => p.name === body.name);
+    if (matchedPersons.length > 0) {
+      return response.status(400).json({ error: 'name must be unique' });
+    }
+    const person = {
+      id: generateId(),
+      name: body.name,
+      number: body.number,
+    }
+    persons = persons.concat(person);
+    response.json(person);
+  }
 });
 
 app.get('/info', (request, response) => {
