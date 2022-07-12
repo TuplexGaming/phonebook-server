@@ -52,7 +52,7 @@ app.post('/api/persons', (request, response, next) => {
     return response.status(400).json({ error: 'number is missing' });
   } else {
     Person.find({ name: body.name }).then(person => {
-      if (person) {
+      if (person.length !== 0) {
         return response.status(400).json({ error: `${body.name} already exists` });
       }
     });
