@@ -37,7 +37,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 // Delete person
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end();
     })
     .catch(error => next(error));
@@ -77,7 +77,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true, runValidators: true })
     .then(updatedPerson => {
-      response.json(updatedPerson)
+      response.json(updatedPerson);
     })
     .catch(error => next(error));
 });
@@ -96,8 +96,8 @@ app.get('/info', (request, response) => {
 
 // Error handling
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unkown endpoint' })
-}
+  response.status(404).send({ error: 'unkown endpoint' });
+};
 app.use(unknownEndpoint);
 
 const errorHandler = (error, request, response, next) => {
@@ -110,7 +110,7 @@ const errorHandler = (error, request, response, next) => {
   }
 
   next(error);
-}
+};
 app.use(errorHandler);
 
 

@@ -5,7 +5,7 @@ const url = process.env.MONGODB_URI;
 console.log('connecting to', url);
 
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {
     console.log('connected to mongoDB');
   })
   .catch((error) => {
@@ -23,7 +23,7 @@ const personSchema = new mongoose.Schema({
     minLength: 8,
     validate: {
       validator: (v) => {
-        return /^\d{2,3}-\d+$/.test(v)
+        return /^\d{2,3}-\d+$/.test(v);
       },
       message: props => `${props.value} is not a valid format`
     },
